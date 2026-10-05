@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An accessible, concise timeline exploring major eras and turning points in the history of the United States.">
+  <title>A Brief History of the United States</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #182435;
+      --muted: #596678;
+      --paper: #f7f4ed;
+      --card: #fffefa;
+      --navy: #142943;
+      --red: #ad3c3c;
+      --gold: #d6a84f;
+      --line: #e5dfd2;
+      --shadow: 0 18px 48px rgb(20 41 67 / 9%);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .sans { font-family: Arial, Helvetica, sans-serif; }
+    .topbar {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem clamp(1.25rem, 5vw, 5rem);
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .brand-mark {
+      display: grid;
+      width: 2rem;
+      height: 2rem;
+      place-items: center;
+      border: 1px solid rgb(255 255 255 / 65%);
+      border-radius: 50%;
+      color: var(--gold);
+      font-size: .9rem;
+    }
+    .topbar nav { display: flex; gap: 1.5rem; }
+    .topbar nav a {
+      color: rgb(255 255 255 / 84%);
+      font-size: .78rem;
+      text-decoration: none;
+    }
+    .topbar nav a:hover, .topbar nav a:focus-visible { color: white; text-decoration: underline; }
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: 620px;
+      min-height: min(760px, 92svh);
+      align-items: center;
+      overflow: hidden;
+      padding: 7.5rem clamp(1.5rem, 10vw, 10rem) 6rem;
+      background:
+        linear-gradient(90deg, rgb(11 27 47 / 94%) 0%, rgb(11 27 47 / 76%) 48%, rgb(11 27 47 / 27%) 100%),
+        radial-gradient(ellipse at 78% 35%, rgb(214 168 79 / 32%), transparent 32%),
+        linear-gradient(145deg, #233f5d, #0d1b2c 70%);
+      color: white;
+    }
+    .hero::after {
+      position: absolute;
+      right: -7rem;
+      bottom: -16rem;
+      width: 42rem;
+      height: 42rem;
+      border: 1px solid rgb(255 255 255 / 14%);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3rem rgb(255 255 255 / 3%), 0 0 0 7rem rgb(255 255 255 / 3%);
+      content: "";
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 740px; }
+    .eyebrow {
+      margin: 0 0 1.1rem;
+      color: var(--gold);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: .73rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(3.4rem, 8vw, 6.9rem);
+      font-weight: 400;
+      letter-spacing: -.055em;
+      line-height: .98;
+    }
+    .hero-intro { max-width: 570px; margin: 1.6rem 0 2rem; color: rgb(255 255 255 / 79%); font-size: clamp(1.05rem, 2vw, 1.25rem); }
+    .hero-links { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; font-family: Arial, Helvetica, sans-serif; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      padding: .9rem 1.2rem;
+      border: 1px solid var(--gold);
+      background: var(--gold);
+      color: #142338;
+      font-size: .82rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .button:hover { transform: translateY(-2px); background: #e4bd70; }
+    .text-link { color: white; font-size: .82rem; text-underline-offset: 4px; }
+    .hero-caption {
+      position: absolute;
+      right: clamp(1.5rem, 5vw, 5rem);
+      bottom: 2rem;
+      z-index: 1;
+      color: rgb(255 255 255 / 65%);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: .68rem;
+      letter-spacing: .05em;
+    }
+    main { overflow: hidden; }
+    .intro-band {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(220px, .7fr);
+      gap: 3rem;
+      align-items: center;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .intro-band h2 { max-width: 650px; margin: 0; font-size: clamp(1.8rem, 3.5vw, 2.7rem); font-weight: 400; line-height: 1.2; }
+    .intro-band p { margin: 0; color: var(--muted); font-family: Arial, Helvetica, sans-serif; font-size: .9rem; }
+    .section-heading { max-width: 1120px; margin: 0 auto; padding: 5rem 2rem 1.5rem; }
+    .section-heading h2 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; letter-spacing: -.03em; }
+    .section-heading p { margin: .45rem 0 0; color: var(--muted); font-family: Arial, Helvetica, sans-serif; font-size: .9rem; }
+    .timeline {
+      position: relative;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1rem 2rem 5rem;
+    }
+    .timeline::before {
+      position: absolute;
+      top: 2rem;
+      bottom: 6rem;
+      left: 50%;
+      width: 1px;
+      background: var(--line);
+      content: "";
+    }
+    .era {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      padding: 2rem 0;
+    }
+    .era:nth-child(even) .era-card { grid-column: 2; }
+    .era:nth-child(even) .era-date { grid-column: 1; grid-row: 1; text-align: right; }
+    .era-card {
+      position: relative;
+      padding: 1.7rem 1.8rem 1.8rem;
+      border: 1px solid var(--line);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+    .era-card::before {
+      position: absolute;
+      top: 1.8rem;
+      right: -2.53rem;
+      width: .8rem;
+      height: .8rem;
+      border: 3px solid var(--paper);
+      border-radius: 50%;
+      background: var(--red);
+      content: "";
+    }
+    .era:nth-child(even) .era-card::before { right: auto; left: -2.53rem; }
+    .era-date { padding-top: 1.9rem; color: var(--red); font-family: Arial, Helvetica, sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .era-card h3 { margin: 0 0 .65rem; font-size: 1.55rem; font-weight: 400; line-height: 1.2; }
+    .era-card p { margin: 0; color: var(--muted); font-family: Arial, Helvetica, sans-serif; font-size: .88rem; line-height: 1.75; }
+    .era-tag { display: inline-block; margin-top: 1.15rem; color: #7b6740; font-family: Arial, Helvetica, sans-serif; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .perspectives {
+      padding: 5rem 2rem;
+      background: #eae5d9;
+    }
+    .perspectives-inner { display: grid; grid-template-columns: .8fr 1.2fr; gap: 4rem; max-width: 1120px; margin: 0 auto; }
+    .perspectives h2 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; line-height: 1.15; }
+    .perspectives-copy p { margin: 0 0 1rem; color: #4e5966; font-family: Arial, Helvetica, sans-serif; font-size: .92rem; }
+    .note { padding-left: 1rem; border-left: 2px solid var(--red); color: #354252 !important; }
+    .closing {
+      padding: 5.5rem 2rem;
+      background: var(--navy);
+      color: white;
+      text-align: center;
+    }
+    .closing h2 { max-width: 760px; margin: 0 auto .9rem; font-size: clamp(2rem, 5vw, 3.7rem); font-weight: 400; line-height: 1.12; }
+    .closing p { max-width: 650px; margin: 0 auto 1.6rem; color: rgb(255 255 255 / 73%); font-family: Arial, Helvetica, sans-serif; font-size: .9rem; }
+    .closing a { color: var(--gold); font-family: Arial, Helvetica, sans-serif; font-size: .84rem; text-underline-offset: 4px; }
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.5rem clamp(1.5rem, 5vw, 5rem);
+      background: #0d1b2c;
+      color: rgb(255 255 255 / 60%);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: .72rem;
+    }
+    footer p { margin: 0; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+    @media (max-width: 700px) {
+      .topbar { padding: 1rem 1.2rem; }
+      .topbar nav { gap: .8rem; }
+      .topbar nav a { font-size: .7rem; }
+      .brand { font-size: .67rem; letter-spacing: .08em; }
+      .brand-mark { width: 1.75rem; height: 1.75rem; }
+      .hero { min-height: 660px; min-height: 88svh; padding: 7rem 1.5rem 5rem; }
+      .hero-caption { left: 1.5rem; right: auto; font-size: .62rem; }
+      .intro-band, .perspectives-inner { grid-template-columns: 1fr; gap: 1.2rem; }
+      .intro-band { padding: 3.5rem 1.5rem; }
+      .section-heading { padding: 3.5rem 1.5rem 1rem; }
+      .timeline { padding: .5rem 1.5rem 3.5rem 2.3rem; }
+      .timeline::before { left: 1.5rem; }
+      .era, .era:nth-child(even) { grid-template-columns: 1fr; gap: .5rem; padding: 1.4rem 0; }
+      .era:nth-child(even) .era-card, .era:nth-child(even) .era-date { grid-column: 1; grid-row: auto; text-align: left; }
+      .era-date { padding: 0 0 0 .4rem; }
+      .era-card { padding: 1.35rem; }
+      .era-card::before, .era:nth-child(even) .era-card::before { top: 1.6rem; right: auto; left: -1.55rem; }
+      .perspectives { padding: 3.5rem 1.5rem; }
+      footer { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="A Brief History of the United States, home">
+      <span class="brand-mark" aria-hidden="true">★</span>
+      <span>American History</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#timeline">Timeline</a>
+      <a href="#perspectives">Perspectives</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="top" aria-labelledby="page-title">
+    <div class="hero-content">
+      <p class="eyebrow">A nation in the making · 1492 to today</p>
+      <h1 id="page-title">A Brief History of the United States</h1>
+      <p class="hero-intro">A story shaped by many peoples, bold ideals, deep conflicts, and the ongoing work of building a more perfect union.</p>
+      <div class="hero-links">
+        <a class="button" href="#timeline">Explore the timeline <span aria-hidden="true">↓</span></a>
+        <a class="text-link" href="#perspectives">A history of many perspectives</a>
+      </div>
+    </div>
+    <div class="hero-caption">An overview of key eras and turning points</div>
+  </section>
+
+  <main>
+    <section class="intro-band" aria-label="Introduction">
+      <h2>More than a list of dates, history is the record of people and the choices that changed their world.</h2>
+      <p>The United States emerged from Indigenous homelands and European colonization, became an independent republic, and grew through expansion, immigration, innovation, and struggle. Its history is still being written.</p>
+    </section>
+
+    <section id="timeline" aria-labelledby="timeline-title">
+      <div class="section-heading">
+        <p class="eyebrow">The long view</p>
+        <h2 id="timeline-title">A nation through the ages</h2>
+        <p>Explore key moments in the United States' evolving story.</p>
+      </div>
+      <div class="timeline">
+        <article class="era">
+          <div class="era-card">
+            <h3>Native Nations &amp; European Colonization</h3>
+            <p>For thousands of years, Indigenous nations built diverse societies across North America. From the late fifteenth century onward, European arrivals brought colonization, trade, disease, and conflict, transforming lives and lands. Enslaved Africans were forcibly brought to the colonies, establishing a system of bondage that shaped the continent.</p>
+            <span class="era-tag">Many nations, many histories</span>
+          </div>
+          <div class="era-date">Before 1607 – 1763</div>
+        </article>
+
+        <article class="era">
+          <div class="era-card">
+            <h3>Revolution &amp; the Founding</h3>
+            <p>Disputes over representation and taxation led thirteen British colonies to declare independence in 1776. After victory in the Revolutionary War, the Constitution created a new federal government. The founding documents proclaimed liberty while slavery and unequal rights remained deeply embedded in society.</p>
+            <span class="era-tag">Independence &amp; a new republic</span>
+          </div>
+          <div class="era-date">1763 – 1800</div>
+        </article>
+
+        <article class="era">
+          <div class="era-card">
+            <h3>Expansion &amp; Disunion</h3>
+            <p>The young nation expanded westward through purchases, migration, and war, often at the devastating expense of Native peoples. Intensifying conflict over slavery and its expansion fractured the country. The Civil War (1861–1865) preserved the Union; emancipation ended legal slavery, though freedom and equal protection remained fiercely contested.</p>
+            <span class="era-tag">Growth, removal &amp; civil war</span>
+          </div>
+          <div class="era-date">1800 – 1865</div>
+        </article>
+
+        <article class="era">
+          <div class="era-card">
+            <h3>Reconstruction &amp; Industrial Change</h3>
+            <p>After the Civil War, Reconstruction amendments ended slavery and established citizenship and voting protections for Black men. White supremacist violence and discriminatory laws undermined these gains. Industrialization and railroads reshaped the economy, while immigration and urban growth transformed communities across the country.</p>
+            <span class="era-tag">Rebuilding &amp; rapid transformation</span>
+          </div>
+          <div class="era-date">1865 – 1914</div>
+        </article>
+
+        <article class="era">
+          <div class="era-card">
+            <h3>World Wars &amp; the Great Depression</h3>
+            <p>The United States became a global power and entered both world wars. The 1929 stock market crash ushered in the Great Depression; President Franklin D. Roosevelt's New Deal expanded the federal government's role in relief and economic recovery. Wartime mobilization brought profound change—and continued injustice—at home.</p>
+            <span class="era-tag">Crisis, reform &amp; global conflict</span>
+          </div>
+          <div class="era-date">1914 – 1945</div>
+        </article>
+
+        <article class="era">
+          <div class="era-card">
+            <h3>Cold War &amp; Civil Rights</h3>
+            <p>After 1945, rivalry with the Soviet Union shaped foreign policy, science, and everyday life. At home, the Civil Rights Movement challenged segregation and discrimination through organizing, legal action, and protest. Landmark laws in the 1960s advanced civil and voting rights, while movements for broader equality continued.</p>
+            <span class="era-tag">Rights movements &amp; a changing world</span>
+          </div>
+          <div class="era-date">1945 – 1991</div>
+        </article>
+
+        <article class="era">
+          <div class="era-card">
+            <h3>A Connected, Changing Nation</h3>
+            <p>The end of the Cold War ushered in a period of rapid globalization and technological change. The September 11, 2001 attacks reshaped national security and foreign policy. In the twenty-first century, debates over democracy, identity, economic opportunity, and the meaning of equality continue to influence American life.</p>
+            <span class="era-tag">An unfinished story</span>
+          </div>
+          <div class="era-date">1991 – Today</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="perspectives" id="perspectives" aria-labelledby="perspectives-title">
+      <div class="perspectives-inner">
+        <div>
+          <p class="eyebrow">A fuller picture</p>
+          <h2 id="perspectives-title">Whose story is told matters.</h2>
+        </div>
+        <div class="perspectives-copy">
+          <p>There is no single account that captures every American experience. Indigenous peoples, Black Americans, immigrants, women, workers, and many others have shaped the nation—often while confronting exclusion and injustice.</p>
+          <p>Understanding the past means looking at both the ideals people pursued and the realities they faced. It also means recognizing that historical interpretations can change as new evidence and voices come to light.</p>
+          <p class="note">This page is a starting point, not a complete history. Explore primary sources and perspectives from the communities and people who lived these events.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing" aria-labelledby="closing-title">
+      <p class="eyebrow">History is a conversation</p>
+      <h2 id="closing-title">The past helps us ask better questions about the future.</h2>
+      <p>Keep exploring the people, ideas, and turning points that continue to shape the United States.</p>
+      <a href="#top">Return to the beginning ↑</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>A Brief History of the United States</p>
+    <p>Created for learning · An overview, not an exhaustive account</p>
+  </footer>
+</body>
+</html>
